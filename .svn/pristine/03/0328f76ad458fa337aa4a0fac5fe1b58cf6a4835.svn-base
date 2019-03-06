@@ -1,0 +1,17 @@
+package com.information.platform.bean.dto;
+
+import com.information.platform.bean.Logger;
+
+public class LoggerDto  extends Logger{
+       
+	   private String userName;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	   
+}

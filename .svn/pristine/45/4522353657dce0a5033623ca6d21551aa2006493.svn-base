@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.information.platform.dao.LoggerMapper" >
+  <resultMap id="BaseResultMap" type="com.information.platform.bean.Logger" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="actionName" property="actionname" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="happenDate" property="happendate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_logger
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.information.platform.bean.Logger" >
+    insert into t_logger (actionName, ip, 
+      userId, happenDate)
+    values (#{actionname,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{userid,jdbcType=INTEGER}, #{happendate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.information.platform.bean.Logger" >
+    update t_logger
+    set actionName = #{actionname,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=INTEGER},
+      happenDate = #{happendate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, actionName, ip, userId, happenDate
+    from t_logger
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultType="com.information.platform.bean.dto.LoggerDto" >
+    select l.id,l.actionName,u.userName,l.ip,l.happenDate from t_logger l
+     LEFT JOIN t_user u on u.id = l.userId
+      <where>
+      
+      <if test='userId!="" and keyword==""'>
+       l.userId = #{userId}
+      </if>
+      
+      <if test='userId!="" and keyword!=""'>
+       l.userId = #{userId} and (userName like concat(concat('%',#{keyword},'%')) or actionName like concat(concat('%',#{keyword},'%')))
+      </if>
+      
+        <if test='userId==0 and keyword!=""'>
+          userName like concat(concat('%',#{keyword},'%')) or actionName like concat(concat('%',#{keyword},'%'))
+      </if>
+      
+        <if test='userId==0 and keyword==""'>
+         1=1
+        </if>
+      
+      
+      </where>
+      order by happenDate desc
+  </select>
+</mapper>

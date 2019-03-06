@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.information.platform.dao.WebsiteMapper" >
+  <resultMap id="BaseResultMap" type="com.information.platform.bean.Website" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="visitCount" property="visitcount" jdbcType="INTEGER" />
+    <result column="visitDate" property="visitdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_website
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.information.platform.bean.Website" >
+    insert into t_website (ip, visitCount, 
+      visitDate)
+    values ( #{ip,jdbcType=VARCHAR}, #{visitcount,jdbcType=INTEGER}, 
+      #{visitdate,jdbcType=TIMESTAMP})
+  </insert>
+  
+    <select id="selectDateByIp" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   select id,visitDate,visitCount,ip from t_website 
+        where ip=#{ip}
+       order by visitDate desc limit 0,1
+  </select>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.information.platform.bean.Website" >
+    update t_website
+    set ip = #{ip,jdbcType=VARCHAR},
+      visitCount = #{visitcount,jdbcType=INTEGER},
+      visitDate = #{visitdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, ip, visitCount, visitDate
+    from t_website
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, ip, visitCount, visitDate
+    from t_website
+  </select>
+  
+  <select id="comprehensiveAnalysis" resultType="com.information.platform.bean.dto.WebsiteDto" >
+     select DISTINCT(select COUNT(DISTINCT ip) from t_website where DATEDIFF(visitDate,NOW())=0) as todayIPCount,
+                (select COUNT(DISTINCT ip) from t_website where DATEDIFF(visitDate,NOW())=-1 ) as yestIPCount,
+                (ROUND((select COUNT(DISTINCT ip) from t_website)/(DATEDIFF(NOW(),MIN(visitDate))+1)))as avgIPCount,               
+                (SELECT COUNT(DISTINCT ip) FROM t_website WHERE DATE_FORMAT(visitDate, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m')) as monthIPCount,
+                (SELECT COUNT(DISTINCT ip) FROM t_website) as totalIPCount,
+                (select COUNT(DISTINCT ip) as highCount from t_website  GROUP BY date_format(visitDate,'%Y-%m-%d') ORDER BY highCount desc limit 0,1 ) as highIPCount,
+                (select date_format(visitDate,'%Y-%m-%d') as highdate FROM t_website GROUP BY date_format(visitDate,'%Y-%m-%d') HAVING COUNT(DISTINCT ip)= 
+                (select COUNT(DISTINCT ip)as countsnum from t_website  GROUP BY date_format(visitDate,'%Y-%m-%d') ORDER BY countsnum desc LIMIT 0,1 )ORDER BY highdate desc LIMIT 0,1 ) as highIPDate,
+                (select  COUNT(visitCount)  from t_website  where  DATEDIFF(visitDate,NOW())=0) as todayVisitCount,
+                (select  COUNT(visitCount)  from t_website  where  DATEDIFF(visitDate,NOW())=-1)as yestVisitCount,
+                (ROUND((select COUNT(visitCount) from t_website)/(DATEDIFF(NOW(),MIN(visitDate))+1)))as avgVisitCount,
+                (SELECT COUNT(visitCount) FROM t_website WHERE DATE_FORMAT(visitDate, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m'))as monthVisitCount,
+                (select count(visitCount) from t_website) as totalVisitCount,
+                (select count(visitCount) as countnum from t_website GROUP BY date_format(visitDate,'%Y-%m-%d') ORDER BY countnum desc LIMIT 0,1)as highVisitCount,
+                (select date_format(visitDate,'%Y-%m-%d') as high FROM t_website GROUP BY date_format(visitDate,'%Y-%m-%d') HAVING COUNT(visitCount)= 
+                (select count(visitCount) as counts from t_website GROUP BY date_format(visitDate,'%Y-%m-%d') ORDER BY counts desc LIMIT 0,1) ORDER BY high DESC LIMIT 0,1)as highVisitDate,
+                (select MIN(date_format(visitDate,'%Y-%m-%d')) from t_website ) as beginDate,
+                (select DATEDIFF(now(),MIN(visitDate))+1 from t_website ) as days
+ FROM t_website
+  </select>
+     
+     <select id="echarts" resultType="com.information.platform.bean.dto.WebsiteEcharts">
+      select  COUNT(DISTINCT ip)as ipCount,
+              COUNT(visitCount) as counts,
+              date_format(visitDate,'%Y-%m-%e')as happendate,
+              DAYOFMONTH(date_format(visitDate,'%Y-%m-%e'))as visitDay 
+              from t_website 
+              <where>
+             
+             <if test='startDate==""  and endDate=="" '>
+                        DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= visitDate 
+             </if>
+             
+             <if test='startDate!=""  and endDate=="" '>
+                      visitDate BETWEEN #{startDate} and DATE_ADD(now(),INTERVAL 1 DAY)
+              </if>
+              
+              <if test='startDate==""  and endDate!="" '>
+                     visitDate BETWEEN '1999-01-01' and DATE_ADD(#{endDate},INTERVAL 1 DAY)
+              </if>
+              
+              
+              <if test='startDate!=""  and endDate!="" '>
+                       visitDate BETWEEN #{startDate} and DATE_ADD(#{endDate},INTERVAL 1 DAY)
+              </if>     
+             </where>
+              GROUP BY happendate
+              ORDER BY  visitDate      
+             
+     </select>
+     
+     
+      <select id="contentPubnish" resultType="com.information.platform.bean.dto.ContentPubnish">
+      select tu.userName as loginName,COUNT(ta.id) as counts 
+       from t_article ta
+       LEFT JOIN t_user tu on tu.id=ta.userId
+        <where>
+             
+             <if test='startDate==""  and endDate=="" '>
+                       1=1
+             </if>
+             
+             <if test='startDate!=""  and endDate=="" '>
+                      ta.pubTime BETWEEN #{startDate} and DATE_ADD(now(),INTERVAL 1 DAY)
+              </if>
+              
+              <if test='startDate==""  and endDate!="" '>
+                     ta.pubTime BETWEEN '1999-01-01' and DATE_ADD(#{endDate},INTERVAL 1 DAY)
+              </if>
+              
+              
+              <if test='startDate!=""  and endDate!="" '>
+                       ta.pubTime BETWEEN #{startDate} and DATE_ADD(#{endDate},INTERVAL 1 DAY)
+              </if>     
+             </where>
+      GROUP BY ta.userId
+      ORDER BY counts desc
+     </select>
+     
+     <select id="contentSource" resultType="com.information.platform.bean.dto.ContentPubnish">
+     select contentSource,COUNT(id) as counts 
+       from t_article 
+        <where>
+             
+             <if test='startDate==""  and endDate=="" '>
+                       1=1
+             </if>
+             
+             <if test='startDate!=""  and endDate=="" '>
+                      pubTime BETWEEN #{startDate} and DATE_ADD(now(),INTERVAL 1 DAY)
+              </if>
+              
+              <if test='startDate==""  and endDate!="" '>
+                     pubTime BETWEEN '1999-01-01' and DATE_ADD(#{endDate},INTERVAL 1 DAY)
+              </if>
+              
+              
+              <if test='startDate!=""  and endDate!="" '>
+                       pubTime BETWEEN #{startDate} and DATE_ADD(#{endDate},INTERVAL 1 DAY)
+              </if>     
+             </where>
+      GROUP BY contentSource
+      ORDER BY counts desc
+     </select>
+  
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.information.platform.dao.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.information.platform.bean.Permission" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="iconId" property="iconId" jdbcType="INTEGER" />
+    <result column="navCode" property="navCode" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderId" jdbcType="INTEGER" />
+    <result column="style" property="style" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteByPId" parameterType="java.lang.Integer" >
+    delete from t_permission
+    where pId = #{pId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.information.platform.bean.Permission" >
+    insert into t_permission (code, description,pId,url,iconId,navCode,orderId,style
+      )
+    values (#{code,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},#{pId},#{url},#{iconId},#{navCode},#{orderId},#{style}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.information.platform.bean.Permission" >
+    update t_permission
+    set code = #{code,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      pId = #{pId},
+      url=#{url},
+      iconId=#{iconId},
+      navCode=#{navCode},
+      orderId=#{orderId},
+      style=#{style}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, code, description,pId,url,iconId,navCode,orderId,style
+    from t_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByNavCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, code, description,pId,url,iconId,navCode,orderId,style
+    from t_permission
+    where navCode = #{navCode}
+  </select>
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select t.id,t.code,t.pId,t.navCode,t.description,t.iconId,t.url,t.orderId,t.style from t_permission t
+  </select>
+  
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select t.code,t.pId,t.navCode,t.description,t.iconId,t.url,t.orderId,t.style from t_permission t
+    where t.id=#{id}
+  </select>
+  
+  <select id="selectSonPermissions" resultMap="BaseResultMap" >
+    select t.id,t.code,t.pId,t.navCode,t.description,t.iconId,t.url,t.orderId,t.style from t_permission t
+     where t.pId=#{pId}
+  </select>
+  
+</mapper>

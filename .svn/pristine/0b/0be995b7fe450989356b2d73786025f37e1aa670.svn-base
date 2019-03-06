@@ -1,0 +1,80 @@
+package com.information.platform.bean.dto;
+
+import com.information.platform.bean.Article;
+
+public class ArticleDto extends Article{
+      private String columnName;
+
+      private String userName;
+      
+      private String  columnIds;
+      
+      private String pubtimes;
+      
+      private String  expiredtimes;
+      
+      private String createdtimes;
+      
+	public String getCreatedtimes() {
+		return createdtimes;
+	}
+
+
+	public void setCreatedtimes(String createdtimes) {
+		this.createdtimes = createdtimes;
+	}
+
+
+	public String getPubtimes() {
+		return pubtimes;
+	}
+
+
+	public void setPubtimes(String pubtimes) {
+		this.pubtimes = pubtimes;
+	}
+
+	public String getExpiredtimes() {
+		return expiredtimes;
+	}
+
+	public void setExpiredtimes(String expiredtimes) {
+		this.expiredtimes = expiredtimes;
+	}
+
+	public String getColumnIds() {
+		return columnIds;
+	}
+
+	public void setColumnIds(String columnIds) {
+		this.columnIds = columnIds;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getColumnName() {
+		return columnName;
+	}
+
+	public void setColumnName(String columnName) {
+		this.columnName = columnName;
+	}
+
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+
+
+	
+      
+	
+}

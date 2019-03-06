@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  				PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  				"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<context id="MysqlContext" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+		<property name="beginningDelimiter" value="'" />
+		<property name="endingDelimiter" value="'" />
+
+		<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://192.168.0.99:3306/access_management" userId="root"
+			password="123456">
+		</jdbcConnection>
+
+		<!-- 生成PO类的位置 -->
+		<javaModelGenerator targetPackage="com.information.platform.bean"
+			targetProject="src/main/java">
+			<property name="enableSubPackages" value="false" />
+			<!-- 从数据库返回的值被清理前后的空格 -->
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- mapper映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="com.information.platform.mapper"
+			targetProject="src/main/java" />
+
+		<!-- 配置mapper对应的java映射 -->
+		<javaClientGenerator targetPackage="com.information.platform.dao"
+			targetProject="src/main/java" type="XMLMAPPER">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<!-- 指定数据库表 -->
+		<table tableName="t_friendlylink" domainObjectName="FriendlyLink"></table>
+	</context>
+</generatorConfiguration>

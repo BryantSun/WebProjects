@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.information.platform.dao.MailboxMapper" >
+  <resultMap id="BaseResultMap" type="com.information.platform.bean.Mailbox" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="credentialsType" property="credentialstype" jdbcType="INTEGER" />
+    <result column="credentialsCode" property="credentialscode" jdbcType="VARCHAR" />
+    <result column="contactAddress" property="contactaddress" jdbcType="VARCHAR" />
+    <result column="messageTitle" property="messagetitle" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="attachmentPath" property="attachmentpath" jdbcType="VARCHAR" />
+    <result column="isOpen" property="isopen" jdbcType="INTEGER" />
+    <result column="letterType" property="lettertype" jdbcType="INTEGER" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_mailbox
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.information.platform.bean.Mailbox" >
+    insert into t_mailbox (name, telephone, 
+      email, credentialsType, credentialsCode, 
+      contactAddress, messageTitle, content, 
+      attachmentPath, isOpen, letterType,sex
+      )
+    values (#{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{credentialstype,jdbcType=INTEGER}, #{credentialscode,jdbcType=VARCHAR}, 
+      #{contactaddress,jdbcType=VARCHAR}, #{messagetitle,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{attachmentpath,jdbcType=VARCHAR}, #{isopen,jdbcType=INTEGER}, #{lettertype,jdbcType=INTEGER},#{sex}
+      )
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.information.platform.bean.Mailbox" >
+    update t_mailbox
+    set name = #{name,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      credentialsType = #{credentialstype,jdbcType=INTEGER},
+      credentialsCode = #{credentialscode,jdbcType=VARCHAR},
+      contactAddress = #{contactaddress,jdbcType=VARCHAR},
+      messageTitle = #{messagetitle,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      attachmentPath = #{attachmentpath,jdbcType=VARCHAR},
+      isOpen = #{isopen,jdbcType=INTEGER},
+      letterType = #{lettertype,jdbcType=INTEGER},
+      sex = #{sex}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, name, telephone, email, credentialsType, credentialsCode, contactAddress, 
+    messageTitle, content, attachmentPath, isOpen, letterType,sex
+    from t_mailbox
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, name, telephone, email, credentialsType, credentialsCode, contactAddress, 
+    messageTitle, content, attachmentPath, isOpen, letterType,sex
+    from t_mailbox
+  </select>
+</mapper>

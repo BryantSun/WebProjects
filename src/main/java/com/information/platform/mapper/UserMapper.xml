@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.information.platform.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.information.platform.bean.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="loginName" property="loginname" jdbcType="VARCHAR" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="lastLoginTime" property="lastlogintime" jdbcType="TIMESTAMP" />
+    <result column="createdTime" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="modifiedTime" property="modifiedTime" jdbcType="TIMESTAMP" />
+    <result column="roleId" property="roleId" jdbcType="INTEGER" />
+    <result column="orderId" property="orderId" jdbcType="INTEGER" />
+     <result column="userSource" property="userSource" jdbcType="VARCHAR" />
+      <result column="isActive" property="isActive" jdbcType="INTEGER" />
+      <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.information.platform.bean.User" >
+    insert into t_user (loginName, userName, 
+      password, email, telephone, 
+      lastLoginTime,createdTime,modifiedTime,roleId,orderId,userSource,isActive,remark)
+    values (#{loginname,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{lastlogintime,jdbcType=TIMESTAMP},#{createdTime},#{modifiedTime},#{roleId},#{orderId},#{userSource},#{isActive},#{remark})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.information.platform.bean.User" >
+    update t_user
+    set loginName = #{loginname,jdbcType=VARCHAR},
+      userName = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      lastLoginTime = #{lastlogintime},
+      createdTime=#{createdTime},
+      modifiedTime=#{modifiedTime},
+      roleId=#{roleId},
+      orderId=#{orderId},
+      userSource=#{userSource},
+      isActive=#{isActive},
+      remark=#{remark}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultType="com.information.platform.bean.dto.UserDto" parameterType="java.lang.Integer" >
+     select tu.id, tu.loginName, tu.userName, tu.password, tu.email, tu.telephone, tu.lastLoginTime,tu.createdTime,tu.modifiedTime,tu.roleId,tr.roleName,tu.orderId,tu.isActive,tu.userSource,tu.remark
+    from t_user tu left join t_role tr on tu.roleId=tr.id
+    where tu.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultType="com.information.platform.bean.dto.UserDto" >
+    select tu.id, tu.loginName, tu.userName, tu.password, tu.email, tu.telephone, tu.lastLoginTime,tu.createdTime,tu.modifiedTime,tu.roleId,tr.roleName,tu.orderId,tu.isActive,tu.userSource,tu.remark
+    from t_user tu left join t_role tr on tu.roleId=tr.id
+  </select>
+  
+  <select id="fuzzySearch" resultType="com.information.platform.bean.dto.UserDto" parameterType="java.lang.String">
+    select tu.id, tu.loginName, tu.userName, tu.password, tu.email, tu.telephone, tu.lastLoginTime,tu.createdTime,tu.modifiedTime,tu.roleId,tr.roleName,tu.orderId,tu.isActive,tu.userSource,tu.remark
+    from t_user tu left join t_role tr on tu.roleId=tr.id  where tu.loginName like concat(concat('%',#{keyword},'%')) or tu.userName like concat(concat('%',#{keyword},'%'))
+  </select>
+  
+  
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select id, loginName, userName, password, email, telephone, lastLoginTime,createdTime,modifiedTime,roleId,orderId,isActive,userSource,remark
+    from t_user
+    where loginName = #{loginName}
+  </select>
+  
+   <select id="checkName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select id, loginName, userName, password, email, telephone, lastLoginTime,createdTime,modifiedTime,roleId,orderId,isActive,userSource,remark
+    from t_user
+    where loginName = #{loginName}
+  </select>
+  
+    <select id="getRoles" resultType="com.information.platform.bean.Role" parameterType="java.lang.String">
+     select r.roleName,r.id  from t_role r 
+      LEFT JOIN t_user_role ur on ur.roleId=r.id 
+      LEFT JOIN t_user u on u.id=ur.userId
+     where u.loginName=#{loginName}
+     </select>
+  
+  
+  
+</mapper>

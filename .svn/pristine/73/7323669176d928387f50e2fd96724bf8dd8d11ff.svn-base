@@ -1,0 +1,117 @@
+package com.information.platform.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.test.context.transaction.AfterTransaction;
+import org.springframework.transaction.annotation.Transactional;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.information.platform.bean.Article;
+import com.information.platform.bean.dto.ArticleDto;
+import com.information.platform.bean.dto.PageDto;
+import com.information.platform.dao.ArticleMapper;
+import com.information.platform.service.ArticleService;
+@Service
+public class ArticleServiceImpl implements ArticleService {
+
+	@Autowired
+	private ArticleMapper articleMapper;
+	
+	@Transactional
+	@Override
+	public int deleteByPrimaryKey(Integer id) {
+		int n = articleMapper.deleteByPrimaryKey(id);
+		return n;
+	}
+
+	@Transactional
+	@Override
+	public int insert(Article record) {
+		int n = articleMapper.insert(record);
+		return n;
+	}
+
+	@Override
+	public ArticleDto selectByPrimaryKey(Integer id) {
+		
+		return articleMapper.selectByPrimaryKey(id);
+	}
+
+
+	@Transactional
+	@Override
+	public int updateByPrimaryKey(Article record) {
+		int n = articleMapper.updateByPrimaryKey(record);
+		return n;
+	}
+
+	@Override
+	public PageInfo<ArticleDto> selectAll(PageDto pageDto) {
+		PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+		List<ArticleDto> articleDtos = articleMapper.selectAll();
+		PageInfo<ArticleDto> pagelist = new PageInfo<ArticleDto>(articleDtos);
+		return pagelist;
+	}
+
+
+	@Override
+	public PageInfo<ArticleDto> selectByParentId(Integer parentId, Integer id,PageDto pageDto) {
+		PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+		List<ArticleDto> articleDtos = articleMapper.selectByParentId(parentId, id);
+		PageInfo<ArticleDto> pagelist = new PageInfo<ArticleDto>(articleDtos);
+		return pagelist;
+	}
+
+	@Override
+	public PageInfo<ArticleDto> fuzzySearch(String startTime, String endTime, String keyword, PageDto pageDto) {
+		PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+		List<ArticleDto> articleDtos = articleMapper.fuzzySearch(startTime, endTime, keyword);
+		PageInfo<ArticleDto> pagelist = new PageInfo<ArticleDto>(articleDtos);
+		return pagelist;
+	}
+
+	@Override
+	public List<ArticleDto> selectArticleSlide(Integer id) {
+		
+		return articleMapper.selectArticleSlide(id);
+	}
+
+	@Transactional
+	@Override
+	public Integer articleStick(Article article) {
+		
+		return articleMapper.articleStick(article);
+	}
+
+	@Override
+	public PageInfo<ArticleDto> selectByParentIdScience(Integer parentId, Integer id, PageDto pageDto) {
+		PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+		List<ArticleDto> articleDtos = articleMapper.selectByParentIdScience(parentId, id);
+		PageInfo<ArticleDto> pagelist = new PageInfo<ArticleDto>(articleDtos);
+		return pagelist;
+	}
+
+	@Override
+	public PageInfo<ArticleDto> getArticleListScience(PageDto pageDto) {
+		PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+		List<ArticleDto> articleDtos = articleMapper.getArticleListScience();
+		PageInfo<ArticleDto> pagelist = new PageInfo<ArticleDto>(articleDtos);
+		return pagelist;
+	}
+
+	@Transactional
+	@Override
+	public Integer previewPubnish(Article article) {
+		
+		return articleMapper.previewPubnish(article);
+	}
+
+	@Transactional
+	@Override
+	public int updateByPrimaryKeySub(ArticleDto record) {
+		
+		return articleMapper.updateByPrimaryKeySub(record);
+	}
+
+}

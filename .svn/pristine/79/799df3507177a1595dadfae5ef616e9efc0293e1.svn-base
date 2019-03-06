@@ -1,0 +1,23 @@
+package com.information.platform.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.information.platform.bean.Icon;
+import com.information.platform.dao.IconMapper;
+import com.information.platform.service.IconService;
+@Service
+public class IconServiceImpl implements IconService{
+	
+	@Autowired
+	private IconMapper iconMapper;
+
+	@Override
+	public List<Icon> selectAll() {
+		
+		return iconMapper.selectAll();
+	}
+
+}

@@ -1,0 +1,24 @@
+package com.information.platform.service;
+
+import java.util.List;
+import com.information.platform.bean.Permission;
+import com.information.platform.bean.dto.PermissionDto;
+
+public interface PermissionService {
+	
+	List<PermissionDto> selectAll();
+
+	int updateByPrimaryKey(Permission record);
+	
+	int insert(Permission record);
+	
+	int deleteByPrimaryKey(Integer id);
+	
+	int deleteByPId(Integer pId);
+	
+	PermissionDto selectById(Integer id);
+	  
+	List<PermissionDto> selectSonPermissions(Integer id);
+	
+	Permission selectByNavCode(String  navCode);
+}

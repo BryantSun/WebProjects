@@ -1,0 +1,51 @@
+package com.information.platform.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.information.platform.bean.FriendlyLink;
+import com.information.platform.dao.FriendlyLinkMapper;
+import com.information.platform.service.FriendlyLinkService;
+@Service
+public class FriendlyLinkServiceImpl implements FriendlyLinkService {
+	
+	@Autowired
+	private FriendlyLinkMapper friendlyLinkMapper;
+
+	@Transactional
+	@Override
+	public int deleteByPrimaryKey(Integer id) {
+		
+		return friendlyLinkMapper.deleteByPrimaryKey(id);
+	}
+
+	@Transactional
+	@Override
+	public int insert(FriendlyLink record) {
+		
+		return friendlyLinkMapper.insert(record);
+	}
+
+	@Override
+	public FriendlyLink selectByPrimaryKey(Integer id) {
+		
+		return friendlyLinkMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<FriendlyLink> selectAll() {
+		
+		return friendlyLinkMapper.selectAll();
+	}
+
+	@Transactional
+	@Override
+	public int updateByPrimaryKey(FriendlyLink record) {
+		
+		return friendlyLinkMapper.updateByPrimaryKey(record);
+	}
+
+}

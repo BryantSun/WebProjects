@@ -1,0 +1,184 @@
+package com.information.platform.bean;
+
+public class Mailbox {
+    
+    private Integer id;
+
+   //姓名
+    private String name;
+
+   //联系电话
+    private String telephone;
+
+   //邮箱地址
+    private String email;
+
+    //证件类型
+    private Integer credentialstype;
+
+    //证件编码
+    private String credentialscode;
+
+    //联系地址
+    private String contactaddress;
+
+    //留言标题
+    private String messagetitle;
+
+    //信件内容
+    private String content;
+
+    //附件地址
+    private String attachmentpath;
+
+    //是否公开
+    private Integer isopen;
+
+    //信件类型
+    private Integer lettertype;
+
+    //性别
+    private Integer sex;
+    
+    @Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Mailbox [id=").append(id).append(", name=").append(name).append(", telephone=")
+				.append(telephone).append(", email=").append(email).append(", credentialstype=").append(credentialstype)
+				.append(", credentialscode=").append(credentialscode).append(", contactaddress=").append(contactaddress)
+				.append(", messagetitle=").append(messagetitle).append(", content=").append(content)
+				.append(", attachmentpath=").append(attachmentpath).append(", isopen=").append(isopen)
+				.append(", lettertype=").append(lettertype).append(", sex=").append(sex).append("]");
+		return builder.toString();
+	}
+
+
+	public Integer getSex() {
+		return sex;
+	}
+
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+
+	public Integer getId() {
+        return id;
+    }
+
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    
+    public String getName() {
+        return name;
+    }
+
+    
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    
+    public String getTelephone() {
+        return telephone;
+    }
+
+    
+    public void setTelephone(String telephone) {
+        this.telephone = telephone == null ? null : telephone.trim();
+    }
+
+   
+    public String getEmail() {
+        return email;
+    }
+
+    
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
+
+    
+    public Integer getCredentialstype() {
+        return credentialstype;
+    }
+
+    
+    public void setCredentialstype(Integer credentialstype) {
+        this.credentialstype = credentialstype;
+    }
+
+    
+    public String getCredentialscode() {
+        return credentialscode;
+    }
+
+    
+    public void setCredentialscode(String credentialscode) {
+        this.credentialscode = credentialscode == null ? null : credentialscode.trim();
+    }
+
+    
+    public String getContactaddress() {
+        return contactaddress;
+    }
+
+    
+    public void setContactaddress(String contactaddress) {
+        this.contactaddress = contactaddress == null ? null : contactaddress.trim();
+    }
+
+    
+    public String getMessagetitle() {
+        return messagetitle;
+    }
+
+    
+    public void setMessagetitle(String messagetitle) {
+        this.messagetitle = messagetitle == null ? null : messagetitle.trim();
+    }
+
+    
+    public String getContent() {
+        return content;
+    }
+
+    
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    
+    public String getAttachmentpath() {
+        return attachmentpath;
+    }
+
+    
+    public void setAttachmentpath(String attachmentpath) {
+        this.attachmentpath = attachmentpath == null ? null : attachmentpath.trim();
+    }
+
+    
+    public Integer getIsopen() {
+        return isopen;
+    }
+
+    
+    public void setIsopen(Integer isopen) {
+        this.isopen = isopen;
+    }
+
+    
+    public Integer getLettertype() {
+        return lettertype;
+    }
+
+    
+    public void setLettertype(Integer lettertype) {
+        this.lettertype = lettertype;
+    }
+}

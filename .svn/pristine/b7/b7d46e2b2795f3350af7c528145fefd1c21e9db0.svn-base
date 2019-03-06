@@ -1,0 +1,20 @@
+package com.information.platform.service;
+
+import java.util.List;
+
+import com.github.pagehelper.PageInfo;
+import com.information.platform.bean.Logger;
+import com.information.platform.bean.dto.LoggerDto;
+import com.information.platform.bean.dto.PageDto;
+
+public interface LoggerService {
+	int deleteByPrimaryKey(Integer id);
+
+    int insert(Logger record);
+
+    Logger selectByPrimaryKey(Integer id);
+
+    PageInfo<LoggerDto>   selectAll(Integer userId,String keyword,PageDto pageDto);
+
+    int updateByPrimaryKey(Logger record);
+}

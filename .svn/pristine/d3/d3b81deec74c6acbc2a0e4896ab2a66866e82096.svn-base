@@ -1,0 +1,117 @@
+package com.information.platform.controller;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.github.pagehelper.PageInfo;
+import com.information.platform.bean.Mailbox;
+import com.information.platform.bean.ResponseBean;
+import com.information.platform.bean.dto.PageDto;
+import com.information.platform.exception.CustomException;
+import com.information.platform.service.MailboxService;
+import com.information.platform.utils.UploadUtils;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+@RestController
+@RequestMapping("/mailbox")
+public class MaiboxController {
+    
+	@Autowired
+	private MailboxService mailboxService;
+	
+	@Autowired
+	 private UploadUtils UploadUtils;
+	
+	private Logger logger = LoggerFactory.getLogger(MaiboxController.class);
+	/**
+	  * 上传栏目预览图至tomcat服务器中存储
+	  * @param file
+	  * @return
+	  */
+	 @ApiOperation(value="上传附件",notes="上传附件")
+	 @ApiImplicitParam(name = "file", value = "附件", required = true, dataType = "org.springframework.web.multipart.MultipartFile")
+	 @PostMapping("/upload")
+	 public ResponseBean uploadFile(@RequestParam("file")MultipartFile file) {
+		 String columnPreview = UploadUtils.uploadColumnPreview(file,"file/");
+		 logger.info("-----"+columnPreview);
+		return new ResponseBean(true, 200, "[upload the picture successfully]", columnPreview);
+	 }	
+	
+	 
+	 @ApiOperation(value="新建信件",notes="新建信件")
+	 @ApiImplicitParam(name = "mailbox", value = "信件对象", required = true, dataType = "com.information.platform.bean.Mailbox")
+	 @PostMapping("/create")
+	 public ResponseBean create(@RequestBody Mailbox mailbox) {
+		int n = mailboxService.insert(mailbox);
+		if (n<=0) {
+			throw new CustomException("新增信件失败!");
+		}
+		return new ResponseBean(true, 200, "[insert an email successfully]", null);
+	 }	
+	
+	 
+	 @ApiOperation(value="分页查询信件列表",notes="分页查询信件列表")
+	 @ApiImplicitParam(name = "pageDto", value = "分页对象", required = true, dataType = "com.information.platform.bean.dto.PageDto")
+	 @RequiresAuthentication
+	 @PostMapping("/getMailList")
+	 public ResponseBean getEmailList(@RequestBody PageDto pageDto) {
+		PageInfo<Mailbox> pages = mailboxService.selectAll(pageDto);
+		return new ResponseBean(true, 200, "[insert an email successfully]", pages);
+	 }	
+	 
+	 @ApiOperation(value="查询信件详情",notes="查询信件详情")
+	 @ApiImplicitParam(name = "id", value = "主键id", required = true, dataType = "java.lang.Integer")
+	 @RequiresAuthentication
+	 @PostMapping("/getInfo")
+	 public ResponseBean getInfo(Integer id) {
+		Mailbox mailbox = mailboxService.selectByPrimaryKey(id);
+		return new ResponseBean(true, 200, "[insert an email successfully]", mailbox);
+	 }	
+	 
+	 @ApiOperation(value="编辑信件",notes="编辑信件")
+	 @ApiImplicitParam(name = "mailbox", value = "信件对象", required = true, dataType = "com.information.platform.bean.Mailbox")
+	 @PostMapping("/update")
+	 public ResponseBean update(@RequestBody Mailbox mailbox) {
+		int n = mailboxService.updateByPrimaryKey(mailbox);
+		if (n<=0) {
+			throw new CustomException("更新信件失败!");
+		}
+		return new ResponseBean(true, 200, "[update an email successfully]", null);
+	 }	
+	
+	 
+	 @ApiOperation(value="删除信件",notes="删除信件")
+	 @ApiImplicitParam(name = "id", value = "信件id数组", required = true, dataType = "java.lang.String")
+	 @PostMapping("/delete")
+	 public ResponseBean delete(String id) {
+		//获取所有的id
+	     String [] ids  =  id.split(",");
+	     List<Integer> integers = new ArrayList<>();
+	     for (String string : ids) {
+		      int num =	Integer.valueOf(string);
+		      integers.add(num);
+		}
+	     for (Integer integer : integers) {
+			int n = mailboxService.deleteByPrimaryKey(integer);
+			if (n<=0) {
+				throw new CustomException("删除信件失败");
+			}
+		}
+		return new ResponseBean(true, 200, "[delete a link successfully]", null);
+		
+	}
+	 
+	 
+	 
+}

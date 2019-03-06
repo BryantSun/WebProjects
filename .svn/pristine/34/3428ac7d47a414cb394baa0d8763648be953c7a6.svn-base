@@ -1,0 +1,21 @@
+package com.information.platform.service;
+
+import java.util.List;
+
+import com.information.platform.bean.FriendlyLink;
+
+public interface FriendlyLinkService {
+	    int deleteByPrimaryKey(Integer id);
+
+	    
+	    int insert(FriendlyLink record);
+
+	    
+	    FriendlyLink selectByPrimaryKey(Integer id);
+
+	   
+	    List<FriendlyLink> selectAll();
+
+	    
+	    int updateByPrimaryKey(FriendlyLink record);
+}

@@ -1,0 +1,23 @@
+package com.information.platform.dao;
+
+import com.information.platform.bean.FriendlyLink;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+@Mapper
+public interface FriendlyLinkMapper {
+    
+    int deleteByPrimaryKey(Integer id);
+
+    
+    int insert(FriendlyLink record);
+
+    
+    FriendlyLink selectByPrimaryKey(Integer id);
+
+   
+    List<FriendlyLink> selectAll();
+
+    
+    int updateByPrimaryKey(FriendlyLink record);
+}

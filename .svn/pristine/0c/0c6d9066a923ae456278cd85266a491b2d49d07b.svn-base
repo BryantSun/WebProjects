@@ -1,0 +1,19 @@
+package com.information.platform.service;
+import com.github.pagehelper.PageInfo;
+import com.information.platform.bean.Mailbox;
+import com.information.platform.bean.dto.PageDto;
+public interface MailboxService {
+	 int deleteByPrimaryKey(Integer id);
+
+	   
+	    int insert(Mailbox record);
+
+	    
+	    Mailbox selectByPrimaryKey(Integer id);
+
+	    
+	    PageInfo<Mailbox> selectAll(PageDto pageDto);
+
+	   
+	    int updateByPrimaryKey(Mailbox record);
+}

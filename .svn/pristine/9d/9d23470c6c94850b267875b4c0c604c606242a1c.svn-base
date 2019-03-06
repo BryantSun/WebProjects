@@ -1,0 +1,38 @@
+package com.information.platform.service;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.information.platform.bean.Website;
+import com.information.platform.bean.dto.ContentPubnish;
+import com.information.platform.bean.dto.WebsiteDto;
+import com.information.platform.bean.dto.WebsiteEcharts;
+
+public interface WebsiteService {
+  
+	int deleteByPrimaryKey(Integer id);
+
+    int insert(Website record);
+
+    Website selectByPrimaryKey(Integer id);
+
+    List<Website> selectAll();
+
+    int updateByPrimaryKey(Website record);
+    
+    Website selectDateByIp(String ip);
+    
+    //网站综合分析
+    WebsiteDto comprehensiveAnalysis();
+    
+    //ip数和访问量图表显示
+    List<WebsiteEcharts> echarts (String startDate,String endDate);
+    
+    //内容发布统计
+    List<ContentPubnish> contentPubnish(String startDate,String endDate);
+       
+    //内容发布统计(按消息来源统计)
+    List<ContentPubnish> contentSource(String startDate,String endDate);
+}

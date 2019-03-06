@@ -1,0 +1,29 @@
+package com.information.platform.controller;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.information.platform.bean.FriendlyLink;
+import com.information.platform.bean.ResponseBean;
+import com.information.platform.service.FriendlyLinkService;
+import com.information.platform.tree.TreeUtil;
+import io.swagger.annotations.ApiOperation;
+
+@RestController
+@RequestMapping("/friendlyLink")
+public class FriendlyLinkController {
+          @Autowired
+          private FriendlyLinkService friendlyLinkService;
+          
+          @ApiOperation(value="获取所有友情链接信息",notes="获取所有友情链接信息")
+     	 @PostMapping("/getlinks")
+           	public ResponseBean getlinks(){
+     		List<FriendlyLink> friendlyLinks = friendlyLinkService.selectAll();
+     		List<FriendlyLink> links = new TreeUtil<FriendlyLink>().getChildTree(friendlyLinks);
+     		return new ResponseBean(true, 200,"[query all columns's info successfully]", links);
+     		
+     	 }
+              
+}

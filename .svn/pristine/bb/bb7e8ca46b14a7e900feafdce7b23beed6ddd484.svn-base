@@ -1,0 +1,57 @@
+package com.information.platform.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.information.platform.bean.Mailbox;
+import com.information.platform.bean.dto.PageDto;
+import com.information.platform.dao.MailboxMapper;
+import com.information.platform.service.MailboxService;
+@Service
+public class MailboxServiceImpl implements MailboxService{
+	
+	
+   @Autowired
+   private MailboxMapper mailboxMapper;
+
+	@Transactional
+	@Override
+	public int deleteByPrimaryKey(Integer id) {
+		
+		return mailboxMapper.deleteByPrimaryKey(id);
+	}
+
+	@Transactional
+	@Override
+	public int insert(Mailbox record) {
+		
+		return mailboxMapper.insert(record);
+	}
+
+	@Override
+	public Mailbox selectByPrimaryKey(Integer id) {
+		
+		return mailboxMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public PageInfo<Mailbox> selectAll(PageDto pageDto) {	
+		PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+		List<Mailbox> mailboxs = mailboxMapper.selectAll();
+		PageInfo<Mailbox> pageInfo = new PageInfo<Mailbox>(mailboxs);
+		return pageInfo;
+	}
+
+	@Transactional
+	@Override
+	public int updateByPrimaryKey(Mailbox record) {
+		
+		return mailboxMapper.updateByPrimaryKey(record);
+	}
+
+}
